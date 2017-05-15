@@ -13,23 +13,20 @@ int main(int argc, char **argv)
 
 	double x[3];
 
-	double h = DBL_MIN, l = DBL_MAX;
+	for(int i = 0; i < 3; i++)
+		x[i] = atof(argv[i + 1]);
 
 	for(int i = 0; i < 3; i++)
 	{
-		x[i] = atof(argv[i+1]);
-		l = std::min(l, x[i]);
-		h = std::max(h, x[i]);
+		double a = x[i], b = x[(i+1)%3], c = x[(i+2)%3];
+
+		if(std::min(a, c) <= b && b <= std::max(a, c))
+		{
+			std::cout << b << std::endl;
+			return 0;
+		}
 	}
 
-	double sum = 0.;
-
-	for(int i = 0; i < 3; i++)
-	{
-		sum += x[i] * (x[i] != l && x[i] != h);
-	}
-
-
-	std::cout << sum << std::endl;
+	std::cout << "error" << std::endl;
 	return 0;
 }
