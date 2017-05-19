@@ -9,6 +9,7 @@
 *.ko
 *.obj
 *.elf
+*.txt
 
 # Precompiled Headers
 *.gch
