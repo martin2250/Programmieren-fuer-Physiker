@@ -5,9 +5,11 @@
 #include <cfloat>
 #include <fstream>
 #include <string.h>
+#include <unistd.h>
 
 
 const int showsolvesteps = 0;
+const int singlestepdelay = 250;	//in ms, 0 = don't print
 int size;
 
 void printEq(double** A, double* B)
@@ -21,6 +23,7 @@ void printEq(double** A, double* B)
 	}
 }
 
+/*	print matrix in a layout compatible with wolfram mathematica	*/
 void printEqW(double** A, double* B)
 {
 	std::cout << "{";
@@ -41,6 +44,19 @@ void printEqW(double** A, double* B)
 	{
 		std::cout << std::setw(5) << B[row] << ((row == (size-1))?"}\n":",");
 	}
+}
+
+/*	print matrix and sleep	*/
+void printStep(double** A, double* B)
+{
+	if(!singlestepdelay)
+		return;
+
+	std::cout << "\033[2J\033[1;1H";
+
+	printEq(A, B);
+
+	usleep(singlestepdelay * 1000);
 }
 
 int main(int argc, char **argv)
@@ -129,6 +145,8 @@ int main(int argc, char **argv)
 			double oldBzero = B[col];
 			B[col] = B[rowx];
 			B[rowx] = oldBzero;
+
+			printStep(A, B);
 		}
 
 		/*	NORMALIZE ROW	*/
@@ -137,6 +155,8 @@ int main(int argc, char **argv)
 			for(int colb = col; colb < size; colb++)
 				A[col][colb] *= rowxfactor;
 			B[col] *= rowxfactor;
+
+			printStep(A, B);
 		}
 
 		/*	APPLY ROWX (now at row=col) TO ALL ROWS BELOW	*/
@@ -155,6 +175,8 @@ int main(int argc, char **argv)
 			}
 
 			B[row] -= B[col] * factor;
+
+			printStep(A, B);
 		}
 
 		if(showsolvesteps)
@@ -164,8 +186,8 @@ int main(int argc, char **argv)
 	std::cout << "\n\nreduced row echelon form:\n";
 	printEq(A, B);
 
+	/*	GENERATE DIAGONAL FORM	*/
 	std::cout << "\nsolving further:\n";
-
 	for(int row = (size - 1); row > 0; row--)
 	{
 		for(int rowb = row - 1; rowb >= 0; rowb--)
@@ -178,9 +200,13 @@ int main(int argc, char **argv)
 			}
 
 			B[rowb] -= factor * B[row];
+
+			printStep(A, B);
 		}
 	}
+	
 	printEq(A, B);
+	printStep(A, B);
 
 	for(int i = 0; i < size; i++)
 		free(A[i]);
