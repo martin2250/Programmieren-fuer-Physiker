@@ -16,10 +16,11 @@ int main(int argc, char **argv)
 	std::ifstream input(argv[1]);
 	input >> width >> height;
 
-	while(y < height && !input.eof())
+	while(y < height)
 	{
 		int ch, num;
-		input >> ch >> num;
+		if(!(input >> ch >> num))
+			break;
 
 		for(;num > 0; num --)
 		{
@@ -35,4 +36,5 @@ int main(int argc, char **argv)
 	}
 
 	input.close();
+	std::cout << std::endl;
 }

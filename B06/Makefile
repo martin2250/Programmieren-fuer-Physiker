@@ -1,4 +1,4 @@
-.PHONY: all 1 2
+.PHONY: all plot
 
 all: 15-ascii-art 16-interpol
 
