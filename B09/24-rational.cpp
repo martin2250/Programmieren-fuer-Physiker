@@ -26,7 +26,7 @@ Ratio::Ratio(long numerator, long denominator)
 void Ratio::set(long numerator, long denominator)
 {
 	this->numerator = numerator;
-	this-> denominator = denominator;
+	this->denominator = denominator;
 	this->cancel();
 }
 
@@ -65,14 +65,14 @@ Ratio Ratio::operator-(const Ratio& b) const
 
 Ratio Ratio::operator*(const Ratio& b) const
 {
-	Ratio r(this->numerator * b.numerator, this-> denominator * b.denominator);
+	Ratio r(this->numerator * b.numerator, this->denominator * b.denominator);
 	r.cancel();
 	return r;
 }
 
 Ratio Ratio::operator/(const Ratio& b) const
 {
-	Ratio r(this->numerator * b.denominator, this-> denominator * b.numerator);
+	Ratio r(this->numerator * b.denominator, this->denominator * b.numerator);
 	r.cancel();
 	return r;
 }
@@ -89,7 +89,7 @@ void Ratio::print()
 
 int main(int argc, char** argv)
 {
-	Ratio a(1, 2), b(1, 4);
+	Ratio a(1, 2), b(2, -6);
 	a.print();
 	b.print();
 	Ratio c = b - a;
