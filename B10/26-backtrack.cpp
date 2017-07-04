@@ -42,26 +42,6 @@ int check(int board[N][N])
 	return 1;
 }
 
-//returns 1 if it was able to place a queen in row y
-//else returns 0 and leaves board untouched
-template<size_t N>
-int place(int board[N][N], int y)
-{
-	if(y >= N)
-		return 1;
-
-	for(int x = 0; x < N; x++)
-	{
-		board[y][x] = 1;
-
-		if(check(board) && place(board, y + 1))
-			return 1;
-		else
-			board[y][x] = 0;
-	}
-	return 0;
-}
-
 //print out board to screen
 template<size_t N>
 void print(int board[N][N])
@@ -91,6 +71,31 @@ void print(int board[N][N])
 			std::cout << "----";
 		std::cout << "-" << std::endl;
 	}
+}
+
+int i = 0;
+//returns 1 if it was able to place a queen in row y
+//else returns 0 and leaves board untouched
+template<size_t N>
+int place(int board[N][N], int y)
+{
+	if(y >= N)
+	{
+		print(board);
+		std::cout << ++i << std::endl;
+		return 0;
+	}
+
+	for(int x = 0; x < N; x++)
+	{
+		board[y][x] = 1;
+
+		if(check(board) && place(board, y + 1))
+			return 1;
+		else
+			board[y][x] = 0;
+	}
+	return 0;
 }
 
 //place nqueen queens randomly on NxN board and show board + output of check function
@@ -127,15 +132,7 @@ int main()
 
 	int board[N][N] = {0};
 
-	int success = place(board, 0);
-
-	if(success)
-	{
-		std::cout << "successfully placed queens, ";
-		print(board);
-	}
-	else
-		std::cout << "was not able to place queens" << std::endl;
+	place(board, 0);
 
 	return 0;
 }
