@@ -1,3 +1,5 @@
 .PHONY: all
 
-all: 28-zero-crossings
+CPPFLAGS += -ICImg -lX11 -lpthread
+
+all: 28-zero-crossings 29-fractal
